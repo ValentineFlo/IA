@@ -3,13 +3,13 @@
 Player::Player()
 {
     m_player.setSize(sf::Vector2f(50, 50));
-    m_player.setFillColor(sf::Color::Red);
+    m_player.setFillColor(sf::Color::Green);
     m_player.setPosition(400, 500);
 }
 
 void Player::Init() {}
 
-void Player::Update()
+void Player::Update(float deltatime)
 {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
         m_player.move(-5, 0);

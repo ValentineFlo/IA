@@ -7,7 +7,7 @@ public:
     Pieces(Player& player, int& score);
 
     void Init() override;
-    void Update() override;
+    void Update(float deltatime) override;
     void Draw(sf::RenderWindow& window) override;
 
 private:

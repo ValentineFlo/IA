@@ -7,7 +7,7 @@ class Player : public IGameObject
 public:
     Player();
     void Init() override;
-    void Update() override;
+    void Update(float deltatime) override;
     void Draw(sf::RenderWindow& window) override;
     sf::FloatRect GetBounds() const;
     sf::Vector2f GetPosition() const;

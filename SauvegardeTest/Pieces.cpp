@@ -20,7 +20,7 @@ void Pieces::Init()
         }
     }
 }
-void Pieces::Update()
+void Pieces::Update(float deltatime)
 {
     auto it = m_pieces.begin();
     while (it != m_pieces.end())

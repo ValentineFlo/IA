@@ -9,9 +9,11 @@ Game::Game() : window(sf::VideoMode(800, 600), "Mario Collecteur de Pieces"), sa
 
     Player* player = new Player;
     Pieces* pieces = new Pieces(*player, score);
+    Boss* boss = new Boss;
 
     gameObjects.push_back(player);
     gameObjects.push_back(pieces);
+    gameObjects.push_back(boss);
 
     saveFile = SaveFile("save.txt");
 
@@ -30,7 +32,7 @@ void Game::Execute()
     while (window.isOpen())
     {
         Events();
-        Update();
+        Update(2.0f);
         Draw();
     }
 }
@@ -50,14 +52,14 @@ void Game::Events()
     }
 }
 
-void Game::Update()
+void Game::Update(const float& deltaTime)
 {
     for (auto objects : gameObjects)
     {
-        objects->Update();
+        objects->Update(2.0f);
     }
 
-    textScore.setString("Score: " + std::to_string(score));
+    textScore.setString("Pieces: " + std::to_string(score));
 }
 
 void Game::Draw()

@@ -1,6 +1,8 @@
 #pragma once
 #include "IGameObjects.h"
 #include "Pieces.h"
+#include "Scenes.h"
+#include "Boss.h"
 
 
 class Game
@@ -12,7 +14,7 @@ public:
 
 private:
     void Events();
-    void Update();
+    void Update(const float& deltaTime);
     void Draw();
 
 private:
