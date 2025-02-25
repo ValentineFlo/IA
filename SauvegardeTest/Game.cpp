@@ -1,5 +1,5 @@
 #include "Game.h"
-Game::Game() : window(sf::VideoMode(800, 600), "Mario Collecteur de Pieces"), saveFile(SaveFile("MySaveAndLoad.txt"))
+Game::Game() : window(sf::VideoMode(800, 600), "Mario Collecteur de Pieces"), saveFile(SaveFile("MySaveAndLoad.txt")), deltaTime(0)
 {
     font.loadFromFile("ariali.ttf");
     textScore.setFont(font);
@@ -7,9 +7,10 @@ Game::Game() : window(sf::VideoMode(800, 600), "Mario Collecteur de Pieces"), sa
     textScore.setFillColor(sf::Color::White);
     textScore.setPosition(10, 10);
 
-    Player* player = new Player;
+
+    player = new Player;
     Pieces* pieces = new Pieces(*player, score);
-    Boss* boss = new Boss;
+    boss = new Boss;
 
     gameObjects.push_back(player);
     gameObjects.push_back(pieces);
@@ -31,8 +32,9 @@ void Game::Execute()
 {
     while (window.isOpen())
     {
+        deltaTime = clock.restart().asSeconds(); 
         Events();
-        Update(2.0f);
+        Update(deltaTime);
         Draw();
     }
 }
@@ -42,8 +44,11 @@ void Game::Events()
     sf::Event event;
     while (window.pollEvent(event))
     {
-        if (event.type == sf::Event::Closed)
+        if (event.type == sf::Event::Closed ||
+            (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape))
+        {
             window.close();
+        }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
             saveFile.save(score);
@@ -54,9 +59,11 @@ void Game::Events()
 
 void Game::Update(const float& deltaTime)
 {
+    boss->setTargetPosition(player->getPosition());
+
     for (auto objects : gameObjects)
     {
-        objects->Update(2.0f);
+        objects->Update(deltaTime);
     }
 
     textScore.setString("Pieces: " + std::to_string(score));
