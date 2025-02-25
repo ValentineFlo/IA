@@ -102,6 +102,12 @@ void Boss::ThieveState::update(Boss* boss, float deltaTime)
 
     std::cout << "thieve" << std::endl;
 
+    //std::cout << "score: " << boss->piece->getScore() << std::endl;
+
+    int score = boss->piece->getScore();
+    score -= 10;
+    boss->piece->setScore(score);
+
     if (distance > 10.0f)
     {
         boss->changeState(State::CHASE);
@@ -124,6 +130,7 @@ Boss::Boss()
     : m_currentState(new IdleState())
     , m_detectionRadius(350.0f)
     , m_speed(150.0f)
+    , piece(nullptr)
 {
     m_boss.setSize(sf::Vector2f(50, 50));
     m_boss.setFillColor(sf::Color::Red);

@@ -1,7 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "IGameObjects.h"
-#include "Player.h"
+#include "Pieces.h"
 
 // faire en sorte que le boss vole des pieces quand il touche le player
 
@@ -43,6 +43,7 @@ protected:
         ~ThieveState() override = default;
         IState* handle(const State& state) override;
         void update(Boss* boss, float deltaTime) override;
+
     };
 
 public:
@@ -87,4 +88,5 @@ private:
     sf::Vector2f m_targetPosition;
     float m_speed;
     float m_detectionRadius;
+    Pieces* piece;
 };

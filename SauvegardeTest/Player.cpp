@@ -28,6 +28,7 @@ void Player::Update(float deltaTime)
     pos.y = std::max(0.f, std::min(pos.y, 550.f));
     m_player.setPosition(pos);
     m_position = m_player.getPosition();
+
 }
 
 void Player::Draw(sf::RenderWindow& window)

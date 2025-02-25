@@ -1,7 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "IGameObjects.h"
-#include "Boss.h"
 
 class Player : public IGameObject
 {

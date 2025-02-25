@@ -9,7 +9,7 @@ Game::Game() : window(sf::VideoMode(800, 600), "Mario Collecteur de Pieces"), sa
 
 
     player = new Player;
-    Pieces* pieces = new Pieces(*player, score);
+    Pieces* pieces = new Pieces(player, score);
     boss = new Boss;
 
     gameObjects.push_back(player);
@@ -17,8 +17,6 @@ Game::Game() : window(sf::VideoMode(800, 600), "Mario Collecteur de Pieces"), sa
     gameObjects.push_back(boss);
 
     saveFile = SaveFile("save.txt");
-
-    //FPS 60
     window.setFramerateLimit(60);
 }
 
