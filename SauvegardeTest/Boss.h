@@ -88,5 +88,4 @@ private:
     sf::Vector2f m_targetPosition;
     float m_speed;
     float m_detectionRadius;
-    Pieces* piece;
 };

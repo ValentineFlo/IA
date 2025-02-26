@@ -1,5 +1,5 @@
 #include "Game.h"
-Game::Game() : window(sf::VideoMode(800, 600), "Mario Collecteur de Pieces"), saveFile(SaveFile("MySaveAndLoad.txt")), deltaTime(0)
+Game::Game() : window(sf::VideoMode(800, 600), "Mario Collecteur de Pieces"), saveFile(SaveFile("MySave.txt")), deltaTime(0)
 {
     font.loadFromFile("ariali.ttf");
     textScore.setFont(font);
@@ -9,14 +9,13 @@ Game::Game() : window(sf::VideoMode(800, 600), "Mario Collecteur de Pieces"), sa
 
 
     player = new Player;
-    Pieces* pieces = new Pieces(player, score);
+    pieces = new Pieces(player, score);
     boss = new Boss;
 
     gameObjects.push_back(player);
     gameObjects.push_back(pieces);
     gameObjects.push_back(boss);
 
-    saveFile = SaveFile("save.txt");
     window.setFramerateLimit(60);
 }
 
@@ -51,7 +50,10 @@ void Game::Events()
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
             saveFile.save(score);
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::L))
+        {
             saveFile.load(score);
+            pieces->setScore(score);
+        }
     }
 }
 
@@ -63,9 +65,10 @@ void Game::Update(const float& deltaTime)
     {
         objects->Update(deltaTime);
     }
-
-    textScore.setString("Pieces: " + std::to_string(score));
+    score = pieces->getScore();
+    textScore.setString("Score: " + std::to_string(score));
 }
+
 
 void Game::Draw()
 {
@@ -74,6 +77,7 @@ void Game::Draw()
     {
         objects->Draw(window);
     }
+
     window.draw(textScore);
     window.display();
 }

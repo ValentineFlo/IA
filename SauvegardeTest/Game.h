@@ -3,6 +3,7 @@
 #include "Pieces.h"
 #include "Scenes.h"
 #include "Boss.h"
+#include "Save.h"
 
 
 class Game
@@ -28,5 +29,6 @@ private:
     SaveFile saveFile;
     Player* player;
     Boss* boss;
+    Pieces* pieces;
 
 };

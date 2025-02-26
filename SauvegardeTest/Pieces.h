@@ -1,6 +1,8 @@
 #pragma once
 #include "Player.h"
 
+class Game;
+
 class Pieces : public IGameObject
 {
 public:
@@ -13,8 +15,15 @@ public:
     int& getScore();
     void setScore(int score);
 
+public:
+    void winPieces();
+public:
+    void addScore(int changeScore); // ajoute changeScore au score
+    void subScore(int changeScore); // enleve changeScore au score
+
 private:
     std::vector<sf::CircleShape> m_pieces;
+    Game* game;
     Player* m_player;
     int m_score;
 

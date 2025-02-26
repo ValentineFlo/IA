@@ -12,6 +12,7 @@ bool SaveFile::save(int& score)
         file << score;
         file.close();
         std::cout << "Partie sauvegardee!" << std::endl;
+        std::cout << "Score save : " << score << std::endl;
         return true;
     }
     else
@@ -24,11 +25,14 @@ bool SaveFile::load(int& score)
     std::ifstream file(m_filename);
     if (file.is_open())
     {
-
-        std::cout << "Partie chargee!" << std::endl;
-        file >> score;
-        file.close();
-        return true;
+        if (file.good())
+        {
+            file >> score;
+            file.close();
+            std::cout << "Partie chargee!" << std::endl;
+            std::cout << "Score charge : " << score << std::endl;
+            std::cout << "Score charge afficher : " << score << std::endl;
+            return true;
+        }
     }
-    return false;
 }

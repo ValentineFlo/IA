@@ -22,25 +22,13 @@ void Pieces::Init()
 }
 void Pieces::Update(float deltatime)
 {
-    auto it = m_pieces.begin();
-    while (it != m_pieces.end())
-    {
-        std::cout << "score: " << m_score << std::endl;
-        if (m_player->GetBounds().intersects(it->getGlobalBounds()))
-        {
-            it = m_pieces.erase(it);
-            m_score += 10;
-        }
-        else
-        {
-            ++it;
-        }
-    }
+    winPieces();
 
     if (m_pieces.empty())
     {
         Init();
     }
+    
 }
 
 void Pieces::Draw(sf::RenderWindow& window)
@@ -51,13 +39,36 @@ void Pieces::Draw(sf::RenderWindow& window)
     }
 }
 
+void Pieces::setScore(int score)
+{
+    m_score = score;
+}
+
 int& Pieces::getScore()
 {
     return m_score;
 }
 
-void Pieces::setScore(int score) 
+void Pieces::winPieces()
 {
-    m_score = score; 
+    std::cout << "score: " << m_score << std::endl;
+    for (auto it = m_pieces.begin(); it != m_pieces.end(); ++it)
+    {
+        if (m_player->GetBounds().intersects(it->getGlobalBounds()))
+        {
+            addScore(10);
+            m_pieces.erase(it);
+            break;
+        }
+    }
 }
 
+void Pieces::addScore(int changeScore)
+{
+    m_score += changeScore;
+}
+
+void Pieces::subScore(int changeScore)
+{
+    m_score -= changeScore;
+}

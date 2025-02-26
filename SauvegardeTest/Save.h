@@ -1,5 +1,6 @@
 #pragma once
 #include "IGameObjects.h"
+#include "Pieces.h"
 
 class ISave
 {
@@ -19,4 +20,5 @@ public:
 
 private:
     std::string m_filename;
+
 };

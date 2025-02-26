@@ -37,3 +37,4 @@ void Player::Draw(sf::RenderWindow& window)
 }
 
 sf::FloatRect Player::GetBounds() const { return m_player.getGlobalBounds(); }
+
