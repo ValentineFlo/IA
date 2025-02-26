@@ -70,6 +70,7 @@ public:
         }
     }
     
+    void setPieces(Pieces* pieces);
 
     IState* m_currentState; 
 
@@ -88,4 +89,5 @@ private:
     sf::Vector2f m_targetPosition;
     float m_speed;
     float m_detectionRadius;
-};
+    Pieces* m_pieces = nullptr;
+}; 

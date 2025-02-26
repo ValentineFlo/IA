@@ -51,16 +51,28 @@ int& Pieces::getScore()
 
 void Pieces::winPieces()
 {
-    std::cout << "score: " << m_score << std::endl;
     for (auto it = m_pieces.begin(); it != m_pieces.end(); ++it)
     {
         if (m_player->GetBounds().intersects(it->getGlobalBounds()))
         {
-            addScore(10);
+            addScore(5);
             m_pieces.erase(it);
             break;
         }
     }
+}
+
+void Pieces::thievePieces()
+{
+    if (m_score > 0)
+	{
+		subScore(1);
+	}
+    else
+    {
+        m_score = 0;
+    }
+
 }
 
 void Pieces::addScore(int changeScore)

@@ -10,7 +10,8 @@ Game::Game() : window(sf::VideoMode(800, 600), "Mario Collecteur de Pieces"), sa
 
     player = new Player;
     pieces = new Pieces(player, score);
-    boss = new Boss;
+    boss = new Boss();
+    boss->setPieces(pieces);
 
     gameObjects.push_back(player);
     gameObjects.push_back(pieces);

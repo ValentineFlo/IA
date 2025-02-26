@@ -100,7 +100,12 @@ void Boss::ThieveState::update(Boss* boss, float deltaTime)
     sf::Vector2f direction = boss->m_targetPosition - boss->getPosition();
     float distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);
 
+    /// Code here
     std::cout << "thieve" << std::endl;
+    if (boss->m_pieces)
+    {
+        boss->m_pieces->thievePieces();
+    }
 
 
     if (distance > 10.0f)
@@ -119,6 +124,8 @@ void Boss::ThieveState::update(Boss* boss, float deltaTime)
 
 }
 
+
+
 // Boss
 
 Boss::Boss()
@@ -134,6 +141,12 @@ Boss::Boss()
 Boss::~Boss()
 {
     delete m_currentState;
+}
+
+
+void Boss::setPieces(Pieces* pieces)
+{
+    m_pieces = pieces;
 }
 
 void Boss::Init() {}
