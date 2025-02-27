@@ -17,13 +17,17 @@ public:
 	sf::FloatRect GetBounds() const;
 
 	void SetPlayer(Player* player);
-	void SetTarget(MegaBoss* megaboss) { m_megaboss = megaboss; }
+	void SetTargetMegaBoss(MegaBoss* megaboss);
+	void SetTargetBoss(Boss* boss);
 
 public:
 	void Shoot();
+	void ShootBoss();
+	void ShootMegaBoss();
 
 private:
 	MegaBoss* m_megaboss;
+	Boss* m_boss;
 	Player* m_player;
 	std::vector<sf::CircleShape> m_projectiles;
 	std::vector<sf::Vector2f> m_directions;

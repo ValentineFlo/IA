@@ -32,6 +32,7 @@ private:
     sf::Text m_textPV_MegaBoss;
     std::vector<IGameObject*> gameObjects;
     int score = 0;
+    bool spaceRelach;
     SaveFile saveFile;
     Pieces* pieces;
     Projectiles* projectiles;

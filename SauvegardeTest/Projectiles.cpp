@@ -13,14 +13,39 @@ void Projectiles::Init()
 
 void Projectiles::Update(float deltaTime) 
 {
+
     for (size_t i = 0; i < m_projectiles.size(); ++i)
     {
         m_projectiles[i].move(m_directions[i] * m_speed * deltaTime);
+        ShootMegaBoss();
+        ShootBoss();
+    }
+
+}
+
+void Projectiles::ShootBoss()
+{
+    for (size_t i = 0; i < m_projectiles.size(); ++i)
+    {
+       
+        if (m_boss && m_projectiles[i].getGlobalBounds().intersects(m_boss->GetBounds()))
+        {
+            m_boss->takeDamage(10);
+
+            m_projectiles.erase(m_projectiles.begin() + i);
+            m_directions.erase(m_directions.begin() + i);
+            --i;
+        }
+    }
+}
+
+void Projectiles::ShootMegaBoss()
+{
+    for (size_t i = 0; i < m_projectiles.size(); ++i)
+    {
 
         if (m_megaboss && m_projectiles[i].getGlobalBounds().intersects(m_megaboss->GetBounds()))
         {
-            std::cout << "[INFO] Collision detectee entre un projectile et MegaBoss !" << std::endl;
-
             m_megaboss->takeDamage(10);
 
             m_projectiles.erase(m_projectiles.begin() + i);
@@ -28,8 +53,9 @@ void Projectiles::Update(float deltaTime)
             --i;
         }
     }
-
 }
+
+
 
 void Projectiles::Draw(sf::RenderWindow& window) 
 {
@@ -53,14 +79,22 @@ void Projectiles::SetPlayer(Player* player)
     m_player = player;
 }
 
+void Projectiles::SetTargetMegaBoss(MegaBoss* megaboss) { m_megaboss = megaboss;}
+
+void Projectiles::SetTargetBoss(Boss* boss ) { m_boss = boss; }
+
 void Projectiles::Shoot()
 {
-    if (!m_player || !m_megaboss) 
+    if (!m_player || !m_megaboss || !m_boss) 
     {
+        if (!m_player)
+			std::cout << "Player null" << std::endl;
+		if (!m_megaboss)
+			std::cout << "MegaBoss null" << std::endl;
+		if (!m_boss)
+			std::cout << "Boss null" << std::endl;
         return;
     }
-
-    sf::Vector2f megabossPosition = m_megaboss->getPosition();
 
     sf::CircleShape projectile(3);
     projectile.setFillColor(sf::Color::Cyan);
@@ -68,10 +102,22 @@ void Projectiles::Shoot()
     sf::Vector2f playerCenter = m_player->getPosition();
     projectile.setPosition(playerCenter);
 
-    sf::Vector2f direction = megabossPosition - playerCenter;
-    float directionNormalize = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+    int randomShoot = std::rand() % 2;
+    sf::Vector2f direction;
 
-     direction /= directionNormalize;
+    if (randomShoot == 0 && m_boss)
+    {
+		direction = m_boss->getPosition() - playerCenter;
+    }
+    else if (randomShoot == 1 && m_megaboss)
+    {
+        direction = m_megaboss->getPosition() - playerCenter;
+    }
+    else
+        return;
+
+    float directionNormalize= std::sqrt(direction.x * direction.x + direction.y * direction.y);
+    direction /= directionNormalize;
 
     float projectileSpeed = 500.f;
     sf::Vector2f velocity = direction * projectileSpeed;

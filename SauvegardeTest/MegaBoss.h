@@ -32,9 +32,6 @@ private:
 	sf::RectangleShape m_megaboss;
 	sf::Vector2f m_position;
 	Player* m_player;
-	Projectiles* m_projectiles;
-	float m_counter = 0.0f;
-	const float m_maxCounter = 1.0f;
 	float m_speed;
 	int m_PV;
 };

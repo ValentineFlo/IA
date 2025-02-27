@@ -34,7 +34,8 @@ Game::Game()
     megaboss = new MegaBoss();
     boss->setPieces(pieces);
     projectiles->SetPlayer(player);
-    projectiles->SetTarget(megaboss);
+    projectiles->SetTargetMegaBoss(megaboss);
+    projectiles->SetTargetBoss(boss);
     megaboss->SetPlayer(player);
 
     gameObjects.push_back(player);
@@ -75,17 +76,31 @@ void Game::Events()
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-            saveFile.save(score);
+            saveFile.save(score, player->getPV(), boss->getPV(), megaboss->getPV());
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::L))
         {
-            saveFile.load(score);
+            int playerPV = 0, bossPV = 0, megabossPV = 0;
+
+            saveFile.load(score, playerPV, bossPV, megabossPV);
+            player->setPV(playerPV);
+            boss->setPV(bossPV);
+            megaboss->setPV(megabossPV);
+
+
             pieces->setScore(score);
         }
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) 
-        {
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !spaceRelach)
+		{
+			spaceRelach = true;
             projectiles->Shoot();
+		}
+
+        if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+        {
+            spaceRelach = false;
         }
+
 
         if (player->isDead())
 			window.close();

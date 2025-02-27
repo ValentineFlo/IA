@@ -16,38 +16,9 @@ void MegaBoss::Init(){}
 void MegaBoss::Update(float deltatime)
 {
 	m_position = m_megaboss.getPosition();
-    std::cout << "MegaBoss PV: " << m_PV
-        << " | Cooldown: " << m_counter
-        << " | Collision: " << (m_megaboss.getGlobalBounds().intersects(this->GetBounds()) ? "OUI" : "NON")
-        << std::endl;
 
     sf::FloatRect bossBounds = m_megaboss.getGlobalBounds();
     sf::FloatRect playerBounds = m_player->GetBounds();
-
-    std::cout << "MegaBoss Bounds: ("
-        << bossBounds.left << ", " << bossBounds.top
-        << ", W: " << bossBounds.width
-        << ", H: " << bossBounds.height << ")" << std::endl;
-
-    std::cout << "Player Bounds: ("
-        << playerBounds.left << ", " << playerBounds.top
-        << ", W: " << playerBounds.width
-        << ", H: " << playerBounds.height << ")" << std::endl;
-
-
-    if (m_counter > 0)
-    {
-        m_counter -= deltatime;
-    }
-
-    if (m_megaboss.getGlobalBounds().intersects(this->GetBounds()))
-    {
-        if (m_counter <= 0)
-        {
-            takeDamage(10);
-            m_counter = m_maxCounter;
-        }
-    }
 
     if (m_PV <= 0)
 	{
