@@ -34,6 +34,11 @@ void Player::Update(float deltaTime)
     m_player.setPosition(pos);
     m_position = m_player.getPosition();
 
+    if (m_PV <= 0)
+    {
+        m_PV = 0;
+    }
+
 }
 
 void Player::Draw(sf::RenderWindow& window)

@@ -1,6 +1,10 @@
+#pragma once
 #include "IGameObjects.h"
-	
-	
+#include "Player.h"
+
+
+class Projectiles;
+
 class MegaBoss : public IGameObject
 {
 public:
@@ -12,6 +16,13 @@ public:
 	sf::FloatRect GetBounds() const;
 
 public:
+	const sf::Vector2f& getPosition() const;
+	void setPosition(const sf::Vector2f& pos);
+
+public:
+	void SetPlayer(Player* player);
+
+public:
 	int getPV() const;
 	void setPV(int PV);
 	void takeDamage(int damagenmbr);
@@ -20,6 +31,10 @@ public:
 private:
 	sf::RectangleShape m_megaboss;
 	sf::Vector2f m_position;
+	Player* m_player;
+	Projectiles* m_projectiles;
+	float m_counter = 0.0f;
+	const float m_maxCounter = 1.0f;
 	float m_speed;
 	int m_PV;
 };

@@ -34,6 +34,8 @@ Game::Game()
     megaboss = new MegaBoss();
     boss->setPieces(pieces);
     projectiles->SetPlayer(player);
+    projectiles->SetTarget(megaboss);
+    megaboss->SetPlayer(player);
 
     gameObjects.push_back(player);
     gameObjects.push_back(pieces);
@@ -103,6 +105,7 @@ void Game::Update(const float& deltaTime)
     m_textPV_Player.setString("PV : " + std::to_string(player->getPV()));
     m_textPV_Boss.setString("PV : " + std::to_string(boss->getPV()));
     m_textPV_MegaBoss.setString("PV : " + std::to_string(megaboss->getPV()));
+
 }
 
 

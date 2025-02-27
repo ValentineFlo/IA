@@ -1,7 +1,10 @@
 #pragma once
 #include "IGameObjects.h"
 #include "Player.h"
+#include "Boss.h"
+#include "MegaBoss.h"
 #include <vector>
+
 
 class Projectiles : public IGameObject
 {
@@ -13,17 +16,17 @@ public:
 	void Draw(sf::RenderWindow& window) override;
 	sf::FloatRect GetBounds() const;
 
-	void SetPlayer(Player* player) 
-	{
-		m_player = player;
-	}
+	void SetPlayer(Player* player);
+	void SetTarget(MegaBoss* megaboss) { m_megaboss = megaboss; }
 
 public:
 	void Shoot();
 
 private:
-	std::vector<sf::CircleShape> m_projectiles;
-	float m_speed;
+	MegaBoss* m_megaboss;
 	Player* m_player;
+	std::vector<sf::CircleShape> m_projectiles;
+	std::vector<sf::Vector2f> m_directions;
+	float m_speed;
 };
 

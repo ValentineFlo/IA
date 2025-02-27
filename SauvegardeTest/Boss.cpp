@@ -172,6 +172,10 @@ void Boss::Update(float deltaTime)
         m_currentState->update(this, deltaTime);
     }
 
+    if (m_PV <= 0)
+    {
+        m_PV = 0;
+    }
 }
 
 void Boss::Draw(sf::RenderWindow& window)
