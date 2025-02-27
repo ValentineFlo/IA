@@ -137,19 +137,25 @@
     <ClCompile Include="Boss.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MegaBoss.cpp" />
     <ClCompile Include="Pieces.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Projectiles.cpp" />
     <ClCompile Include="Save.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Boss.h" />
+    <ClInclude Include="BTMegaBoss.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="IGameObjects.h" />
+    <ClInclude Include="MegaBoss.h" />
+    <ClInclude Include="Projectiles.h" />
     <ClInclude Include="Save.h" />
     <ClInclude Include="Pieces.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="IScenes.h" />
     <ClInclude Include="Scenes.h" />
+    <ClInclude Include="Tree.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -56,7 +56,7 @@ void Pieces::winPieces()
         if (m_player->GetBounds().intersects(it->getGlobalBounds()))
         {
             addScore(5);
-            m_pieces.erase(it);
+            it = m_pieces.erase(it);
             break;
         }
     }

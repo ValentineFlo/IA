@@ -50,39 +50,29 @@ public:
     Boss();
     ~Boss();
 
-    void setTargetPosition(const sf::Vector2f& position) { m_targetPosition = position; }
-
-    void move(const sf::Vector2f& offset)
-    {
-        m_boss.move(offset);
-    }
-
-    void changeState(const State& newState)
-    {
-        if (m_currentState)
-        {
-            IState* state = m_currentState->handle(newState);
-            if (state)
-            {
-                delete m_currentState;
-                m_currentState = state;
-            }
-        }
-    }
-    
+    void setTargetPosition(const sf::Vector2f& position);
+    void move(const sf::Vector2f& offset);
+    void changeState(const State& newState);
     void setPieces(Pieces* pieces);
 
     IState* m_currentState; 
 
-private:
+public:
     void Init() override;
     void Update(float deltaTime) override;
     void Draw(sf::RenderWindow& window) override;
-    sf::FloatRect GetBounds() const;
-    float getSpeed() const { return m_speed; }
-    const sf::Vector2f& getPosition() const { return m_boss.getPosition(); }
-    float getDetectionRadius() const { return m_detectionRadius; }
 
+public:
+    sf::FloatRect GetBounds() const;
+    float getSpeed() const;
+    const sf::Vector2f& getPosition() const;
+    float getDetectionRadius() const;
+
+public:
+    int getPV() const;
+    void setPV(int PV);
+    void takeDamage(int damagenmbr);
+    bool isDead() const;
 
 private:
     sf::RectangleShape m_boss;
@@ -90,4 +80,5 @@ private:
     float m_speed;
     float m_detectionRadius;
     Pieces* m_pieces = nullptr;
+    int m_PV;
 }; 

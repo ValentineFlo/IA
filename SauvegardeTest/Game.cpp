@@ -1,21 +1,45 @@
 #include "Game.h"
-Game::Game() : window(sf::VideoMode(800, 600), "Mario Collecteur de Pieces"), saveFile(SaveFile("MySave.txt")), deltaTime(0)
+Game::Game() 
+    : window(sf::VideoMode(800, 600), "Mario Collecteur de Pieces")
+    , saveFile(SaveFile("MySave.txt"))
+    , deltaTime(0)
+    //, npc(*this)
 {
     font.loadFromFile("ariali.ttf");
-    textScore.setFont(font);
-    textScore.setCharacterSize(30);
-    textScore.setFillColor(sf::Color::White);
-    textScore.setPosition(10, 10);
+    m_textScore.setFont(font);
+    m_textScore.setCharacterSize(30);
+    m_textScore.setFillColor(sf::Color::White);
+    m_textScore.setPosition(10, 10);
+
+    m_textPV_Player.setFont(font);
+    m_textPV_Player.setCharacterSize(20);
+    m_textPV_Player.setFillColor(sf::Color::Green);
+    m_textPV_Player.setPosition(710, 570);
+
+    m_textPV_MegaBoss.setFont(font);
+    m_textPV_MegaBoss.setCharacterSize(20);
+    m_textPV_MegaBoss.setFillColor(sf::Color::Red);
+    m_textPV_MegaBoss.setPosition(10, 570);
+
+    m_textPV_Boss.setFont(font);
+    m_textPV_Boss.setCharacterSize(20);
+    m_textPV_Boss.setFillColor(sf::Color::Magenta);
+    m_textPV_Boss.setPosition(710, 10);
 
 
     player = new Player;
     pieces = new Pieces(player, score);
+    projectiles = new Projectiles();
     boss = new Boss();
+    megaboss = new MegaBoss();
     boss->setPieces(pieces);
+    projectiles->SetPlayer(player);
 
     gameObjects.push_back(player);
     gameObjects.push_back(pieces);
+    gameObjects.push_back(projectiles);
     gameObjects.push_back(boss);
+    gameObjects.push_back(megaboss);
 
     window.setFramerateLimit(60);
 }
@@ -26,7 +50,7 @@ Game::~Game()
         delete objects;
 }
 
-void Game::Execute()
+void Game::Run()
 {
     while (window.isOpen())
     {
@@ -55,6 +79,14 @@ void Game::Events()
             saveFile.load(score);
             pieces->setScore(score);
         }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) 
+        {
+            projectiles->Shoot();
+        }
+
+        if (player->isDead())
+			window.close();
     }
 }
 
@@ -67,7 +99,10 @@ void Game::Update(const float& deltaTime)
         objects->Update(deltaTime);
     }
     score = pieces->getScore();
-    textScore.setString("Score: " + std::to_string(score));
+    m_textScore.setString("Score : " + std::to_string(score));
+    m_textPV_Player.setString("PV : " + std::to_string(player->getPV()));
+    m_textPV_Boss.setString("PV : " + std::to_string(boss->getPV()));
+    m_textPV_MegaBoss.setString("PV : " + std::to_string(megaboss->getPV()));
 }
 
 
@@ -79,6 +114,10 @@ void Game::Draw()
         objects->Draw(window);
     }
 
-    window.draw(textScore);
+    window.draw(m_textScore);
+    window.draw(m_textPV_Player);
+    window.draw(m_textPV_Boss);
+    window.draw(m_textPV_MegaBoss);
     window.display();
 }
+

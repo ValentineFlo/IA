@@ -1,13 +1,18 @@
 #include "Player.h"
 
-Player::Player() : m_speed(300.0f)
+Player::Player()
+{
+    Init();
+}
+
+void Player::Init() 
 {
     m_player.setSize(sf::Vector2f(50, 50));
     m_player.setFillColor(sf::Color::Green);
     m_player.setPosition(400, 500);
+    m_speed = 300.0f;
+    m_PV = 100;
 }
-
-void Player::Init() {}
 
 void Player::Update(float deltaTime)
 {
@@ -36,5 +41,26 @@ void Player::Draw(sf::RenderWindow& window)
     window.draw(m_player);
 }
 
+
 sf::FloatRect Player::GetBounds() const { return m_player.getGlobalBounds(); }
+
+const sf::Vector2f& Player::getPosition() const { return m_position; }
+void Player::setPosition(const sf::Vector2f& pos) { m_player.setPosition(pos); }
+
+int Player::getPV() const { return m_PV; }
+void Player::setPV(int PV) { m_PV = PV; }
+
+void Player::takeDamage(int damagenmbr)
+{
+    m_PV -= damagenmbr;
+}
+
+bool Player::isDead() const
+{
+    if (m_PV <= 0)
+	{
+		return true;
+	}
+	return false;
+}
 

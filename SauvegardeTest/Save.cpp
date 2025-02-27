@@ -22,14 +22,15 @@ bool SaveFile::save(int& score)
 bool SaveFile::load(int& score)
 {
     std::ifstream file(m_filename);
-    if (file.is_open())
+    int tempScore;
+    if (file >> tempScore)
     {
-        if (file.good())
-        {
-            file >> score;
-            file.close();
-            std::cout << "Partie chargee!" << std::endl;
-            return true;
-        }
+        score = tempScore;
+        std::cout << "Partie chargee!" << std::endl;
+        return true;
+    }
+    else
+    {
+        std::cout << "Erreur: Chargement echoue!" << std::endl;
     }
 }
