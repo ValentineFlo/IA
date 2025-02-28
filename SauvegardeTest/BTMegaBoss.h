@@ -16,7 +16,7 @@ namespace BT
         bool condition() override
         {
             std::cout << getGameObject()->getPV()<< std::endl;
-            return getGameObject()->getPV();   //isPlayerNear();
+            return getGameObject()->isPlayerDetect();
         }
     };
 
@@ -29,7 +29,7 @@ namespace BT
         {
 
             std::cout << getGameObject()->getPV() << std::endl;
-            getGameObject()->getPV();   //isPlayerNear();//idleBehavior();
+            getGameObject()->Idle();
             return Running;
         }
     };
@@ -43,8 +43,7 @@ namespace BT
         {
 
             std::cout << getGameObject()->getPV() << std::endl;
-            getGameObject()->getPV();
-                //patrolArea();
+            getGameObject()->Patrol();
             return Running;
         }
     };
@@ -57,8 +56,7 @@ namespace BT
         Status tick() override
         {
             std::cout << getGameObject()->getPV() << std::endl;
-            getGameObject()->getPV();
-                //Shoot();
+            getGameObject()->Shoot();
             return Success;
         }
     };
@@ -82,8 +80,7 @@ namespace BT
         Status tick() override
         {
             std::cout << getGameObject()->getPV() << std::endl;
-            getGameObject()->getPV();
-                //SpecialAttack();
+            getGameObject()->SpecialAttack();
             return Success;
         }
     };

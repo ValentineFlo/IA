@@ -24,6 +24,14 @@ public:
 	void SetPlayer(Player* player);
 
 public:
+	//Behavior tree
+	bool isPlayerDetect();
+	void Idle();
+	void Patrol();
+	void Shoot();
+	void SpecialAttack();
+
+public:
 	int getPV() const;
 	void setPV(int PV);
 	void takeDamage(int damagenmbr);

@@ -33,12 +33,7 @@ void MegaBoss::Update(float deltatime)
 
     sf::FloatRect bossBounds = m_megaboss.getGlobalBounds();
     sf::FloatRect playerBounds = m_player->GetBounds();
-
-    if (m_PV <= 0)
-	{
-		m_PV = 0;
-	}
-
+    Patrol(); 
 
 }
 
@@ -48,17 +43,65 @@ void MegaBoss::Draw(sf::RenderWindow& window)
 }
 sf::FloatRect MegaBoss::GetBounds() const { return m_megaboss.getGlobalBounds(); }
 
-
 const sf::Vector2f& MegaBoss::getPosition() const { return m_position; }
 void MegaBoss::setPosition(const sf::Vector2f& pos) { m_megaboss.setPosition(pos); }
 
 void MegaBoss::SetPlayer(Player* player) { m_player = player; }
+
+
+bool MegaBoss::isPlayerDetect()
+{
+    return false;
+}
+
+void MegaBoss::Idle()
+{
+
+}
+
+void MegaBoss::Patrol()
+{
+    static bool movingRight = true;
+
+    if (movingRight)
+    {
+        m_megaboss.move(0, m_speed * 0.03f);
+        if (m_megaboss.getPosition().y >= 500)
+        {
+            movingRight = false;
+        }
+    }
+    else
+    {
+        m_megaboss.move(0,-m_speed * 0.03f);
+        if (m_megaboss.getPosition().y <= 100)
+        {
+            movingRight = true;
+        }
+    }
+}
+
+void MegaBoss::Shoot()
+{
+
+}
+
+void MegaBoss::SpecialAttack()
+{
+
+}
+
 
 int MegaBoss::getPV() const { return m_PV; }
 void MegaBoss::setPV(int PV) { m_PV = PV; }
 void MegaBoss::takeDamage(int damagenmbr)
 {
     m_PV -= damagenmbr;
+
+    if (m_PV <= 0)
+    {
+        m_PV = 0;
+    }
 }
 
 bool MegaBoss::isDead() const
