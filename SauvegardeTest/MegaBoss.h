@@ -1,6 +1,7 @@
 #pragma once
 #include "IGameObjects.h"
 #include "Player.h"
+#include "Tree.h"
 
 
 class Projectiles;
@@ -32,6 +33,7 @@ private:
 	sf::RectangleShape m_megaboss;
 	sf::Vector2f m_position;
 	Player* m_player;
+	BT::RootNode m_rootNode; 
 	float m_speed;
 	int m_PV;
 };

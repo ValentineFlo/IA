@@ -1,12 +1,26 @@
 #include "MegaBoss.h"
+#include "BTMegaBoss.h"
 
-MegaBoss::MegaBoss()
+MegaBoss::MegaBoss() : m_rootNode(this), m_player(nullptr)
 {
     m_megaboss.setSize(sf::Vector2f(50, 50));
     m_megaboss.setFillColor(sf::Color::Red);
     m_megaboss.setPosition(300, 50);
     m_speed = 100.0f;
 	m_PV = 300;
+
+    auto* behavior = new BT::Sequence(&m_rootNode);
+
+    auto* idleOrPatrol = new BT::Retry(behavior);
+    new BT::Idle(idleOrPatrol);
+    new BT::Patrol(idleOrPatrol);
+
+    auto* detectAndAttack = new BT::Sequence(behavior);
+    new BT::PlayerDetect(detectAndAttack);
+    new BT::AttackPlayer(detectAndAttack);
+
+    auto* lowHealthCheck = new BT::LowHealth(behavior);
+    new BT::SpecialAttack(lowHealthCheck);
 }
 
 MegaBoss::~MegaBoss(){}
