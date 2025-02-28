@@ -36,6 +36,7 @@ private:
     SaveFile saveFile;
     Pieces* pieces;
     Projectiles* projectiles;
+    ProjectilesMegaBoss* projectilesMegaBoss;
     Player* player;
     Boss* boss;
     MegaBoss* megaboss;

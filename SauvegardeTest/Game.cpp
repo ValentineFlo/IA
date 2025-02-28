@@ -30,17 +30,22 @@ Game::Game()
     player = new Player;
     pieces = new Pieces(player, score);
     projectiles = new Projectiles();
+    projectilesMegaBoss = new ProjectilesMegaBoss();
     boss = new Boss();
     megaboss = new MegaBoss();
     boss->setPieces(pieces);
-    projectiles->SetPlayer(player);
-    projectiles->SetTargetMegaBoss(megaboss);
-    projectiles->SetTargetBoss(boss);
-    megaboss->SetPlayer(player);
+    projectiles->setPlayer(player);
+    projectiles->setTargetMegaBoss(megaboss);
+    projectiles->setTargetBoss(boss);
+    megaboss->setPlayer(player);
+    projectilesMegaBoss->setPlayer(player);
+    projectilesMegaBoss->setTargetMegaBoss(megaboss);
+    megaboss->setProjectiles(projectilesMegaBoss);
 
     gameObjects.push_back(player);
     gameObjects.push_back(pieces);
     gameObjects.push_back(projectiles);
+    gameObjects.push_back(projectilesMegaBoss);
     gameObjects.push_back(boss);
     gameObjects.push_back(megaboss);
 

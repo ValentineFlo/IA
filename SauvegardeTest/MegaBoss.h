@@ -5,6 +5,7 @@
 
 
 class Projectiles;
+class ProjectilesMegaBoss;
 
 class MegaBoss : public IGameObject
 {
@@ -21,7 +22,8 @@ public:
 	void setPosition(const sf::Vector2f& pos);
 
 public:
-	void SetPlayer(Player* player);
+	void setPlayer(Player* player);
+	void setProjectiles(ProjectilesMegaBoss* projectiles);
 
 public:
 	//Behavior tree
@@ -41,7 +43,11 @@ private:
 	sf::RectangleShape m_megaboss;
 	sf::Vector2f m_position;
 	Player* m_player;
+	Projectiles* m_projectiles;
+	ProjectilesMegaBoss* m_projectilesMegaBoss;
 	BT::RootNode m_rootNode; 
 	float m_speed;
+	float m_counter = 0.0f;
+	const float m_maxCounter = 1.0f;
 	int m_PV;
 };
