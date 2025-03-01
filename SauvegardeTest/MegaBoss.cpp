@@ -30,30 +30,36 @@ void MegaBoss::Init(){}
 
 void MegaBoss::Update(float deltatime)
 {
-	m_position = m_megaboss.getPosition();
+    m_position = m_megaboss.getPosition();
 
-    sf::FloatRect bossBounds = m_megaboss.getGlobalBounds();
-    sf::FloatRect playerBounds = m_player->GetBounds();
+    if (m_isIdle)
+    {
+        m_counterIdle -= deltatime;
+        if (m_counterIdle <= 0)
+        {
+            m_isIdle = false;
+        }
+        return;
+    }
+
     Patrol();
 
     if (isPlayerDetect())
     {
-        if (m_counter > 0)
+        if (m_counterShootBoss <= 0)
         {
-            m_counter -= deltatime;
+            m_counterShootBoss += deltatime;
         }
 
-        if (isPlayerDetect() && m_counter <= 0)
+        if (m_counterShootBoss > 0)
         {
-            //Idle();
+            Idle();
             Shoot();
-            m_counter = m_maxCounter;
+            m_counterShootBoss = m_maxCounterShootBoss; 
         }
     }
-
-
-
 }
+
 
 void MegaBoss::Draw(sf::RenderWindow& window)
 {
@@ -94,7 +100,11 @@ bool MegaBoss::isPlayerDetect()
 
 void MegaBoss::Idle()
 {
-
+    if (!m_isIdle)
+    {
+        m_isIdle = true;
+        m_counterIdle = m_maxCounterIdle;
+    }
 }
 
 void MegaBoss::Patrol()
@@ -123,8 +133,6 @@ void MegaBoss::Shoot()
 {
     if (!m_projectilesMegaBoss)
     {
-        
-        std::cout << "Erreur: `m_projectilesMegaBoss` est NULL !\n";
         return;
     }
 

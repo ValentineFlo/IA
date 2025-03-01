@@ -221,7 +221,7 @@ void ProjectilesMegaBoss::Shoot()
     direction /= directionNormalize;
 
     float projectileSpeed = 500.f;
-    sf::Vector2f velocity = direction * projectileSpeed;
+    sf::Vector2f velocity = direction * projectileSpeed * 4.0f;
 
     m_projectilesBoss.push_back(projectile);
     m_directions.push_back(direction);

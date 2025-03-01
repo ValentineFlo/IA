@@ -63,5 +63,6 @@ private:
 	std::vector<sf::CircleShape> m_projectilesBoss;
 	std::vector<sf::Vector2f> m_directions;
 	float m_speed;
+
 };
 
