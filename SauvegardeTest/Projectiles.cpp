@@ -94,8 +94,8 @@ void Projectiles::Shoot()
         return;
     }
 
-    sf::CircleShape projectile(3);
-    projectile.setFillColor(sf::Color::Cyan);
+    sf::CircleShape projectile(5);
+    projectile.setFillColor(sf::Color::Green);
 
     sf::Vector2f playerCenter = m_player->getPosition();
     projectile.setPosition(playerCenter);
@@ -163,6 +163,21 @@ void ProjectilesMegaBoss::ShootToPlayer()
         }
     }
 }
+void ProjectilesMegaBoss::ShootToPlayerAngry()
+{
+    for (size_t i = 0; i < m_projectilesBoss.size(); ++i)
+    {
+
+        if (m_player && m_projectilesBoss[i].getGlobalBounds().intersects(m_player->GetBounds()))
+        {
+            m_player->takeDamage(20);
+
+            m_projectilesBoss.erase(m_projectilesBoss.begin() + i);
+            m_directions.erase(m_directions.begin() + i);
+            --i;
+        }
+    }
+}
 
 
 void ProjectilesMegaBoss::Draw(sf::RenderWindow& window)
@@ -222,6 +237,25 @@ void ProjectilesMegaBoss::Shoot()
 
     float projectileSpeed = 500.f;
     sf::Vector2f velocity = direction * projectileSpeed * 4.0f;
+
+    m_projectilesBoss.push_back(projectile);
+    m_directions.push_back(direction);
+    std::cout << "Tir special cree ! Nombre total de projectiles : " << m_projectilesBoss.size() << "\n";
+}
+
+void ProjectilesMegaBoss::ShootAngry()
+{
+    sf::CircleShape projectile(6);
+    projectile.setFillColor(sf::Color::Red);
+    projectile.setPosition(m_megaboss->getPosition());
+
+    sf::Vector2f bossPosition = m_megaboss->getPosition();
+    sf::Vector2f playerPosition = m_player->getPosition();
+    sf::Vector2f direction = playerPosition - bossPosition;
+
+    float directionNormalize = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+    if (directionNormalize != 0)
+        direction /= directionNormalize;
 
     m_projectilesBoss.push_back(projectile);
     m_directions.push_back(direction);

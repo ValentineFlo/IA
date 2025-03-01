@@ -54,7 +54,10 @@ public:
 
 public:
 	void Shoot();
+	void ShootAngry();
+	
 	void ShootToPlayer();
+	void ShootToPlayerAngry();
 
 private:
 	MegaBoss* m_megaboss;

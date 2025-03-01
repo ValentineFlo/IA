@@ -2,7 +2,7 @@
 #include "BTMegaBoss.h"
 #include "Projectiles.h"
 
-MegaBoss::MegaBoss() : m_rootNode(this), m_player(nullptr), m_projectiles(nullptr)
+MegaBoss::MegaBoss() : m_rootNode(this), m_player(nullptr), m_projectiles(nullptr), m_projectilesMegaBoss(nullptr)
 {
     m_megaboss.setSize(sf::Vector2f(50, 50));
     m_megaboss.setFillColor(sf::Color::Red);
@@ -32,6 +32,19 @@ void MegaBoss::Update(float deltatime)
 {
     m_position = m_megaboss.getPosition();
 
+    if (m_PV <= m_angryPVLimit && !m_isAngry)
+    {
+        m_isAngry = true;
+        m_speed *= m_angrySpeed;
+        m_counterShootBoss *= m_angrySpeedShoot;
+        m_maxCounterShootBossAngry  *= m_angrySpeedShoot;
+    }
+
+    if (m_counterShootBossAngry > 0)
+    {
+        m_counterShootBossAngry -= deltatime;
+    }
+
     if (m_isIdle)
     {
         m_counterIdle -= deltatime;
@@ -39,26 +52,30 @@ void MegaBoss::Update(float deltatime)
         {
             m_isIdle = false;
         }
-        return;
+        return; 
     }
 
     Patrol();
 
-    if (isPlayerDetect())
+    if (m_counterShootBossAngry > 0)
     {
-        if (m_counterShootBoss <= 0)
-        {
-            m_counterShootBoss += deltatime;
-        }
+        m_counterShootBossAngry -= deltatime;
+    }
 
-        if (m_counterShootBoss > 0)
-        {
-            Idle();
-            Shoot();
-            m_counterShootBoss = m_maxCounterShootBoss; 
-        }
+    if (isPlayerDetect() && m_counterShootBoss <= 0 && !m_isAngry)
+    {
+        Shoot();
+        Idle();
+        m_counterShootBoss = m_maxCounterShootBoss;
+    }
+
+    if (m_isAngry && m_counterShootBossAngry <= 0)
+    {
+        Shoot();
+		m_counterShootBossAngry = m_maxCounterShootBossAngry;
     }
 }
+
 
 
 void MegaBoss::Draw(sf::RenderWindow& window)
@@ -136,12 +153,21 @@ void MegaBoss::Shoot()
         return;
     }
 
-    m_projectilesMegaBoss->Shoot();
+    if (!m_isAngry) 
+    {
+        std::cout << "Tir normal" << std::endl;
+        m_projectilesMegaBoss->Shoot();
+    }
+    else if (m_isAngry)
+    {
+        m_projectilesMegaBoss->ShootAngry();
+        std::cout << "Tir special" << std::endl;
+    }
 }
 
 void MegaBoss::SpecialAttack()
 {
-
+    
 }
 
 
@@ -149,12 +175,17 @@ int MegaBoss::getPV() const { return m_PV; }
 void MegaBoss::setPV(int PV) { m_PV = PV; }
 void MegaBoss::takeDamage(int damagenmbr)
 {
+    std::cout << "AVANT MegaBoss took " << damagenmbr << " damage" << std::endl;
+    std::cout << "AVANT MegaBoss PV : " << m_PV << std::endl;
     m_PV -= damagenmbr;
 
     if (m_PV <= 0)
     {
         m_PV = 0;
     }
+
+    std::cout << "APRES MegaBoss took " << damagenmbr << " damage" << std::endl;
+    std::cout << "APRES MegaBoss PV : " << m_PV << std::endl;
 }
 
 bool MegaBoss::isDead() const

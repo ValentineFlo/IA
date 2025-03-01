@@ -47,10 +47,21 @@ private:
 	ProjectilesMegaBoss* m_projectilesMegaBoss;
 	BT::RootNode m_rootNode; 
 	float m_speed;
+	int m_PV;
+
 	float m_counterShootBoss = 0.0f;
 	const float m_maxCounterShootBoss = 1.0f;
 	bool m_isIdle = false;
 	float m_counterIdle = 0.0f;
 	const float m_maxCounterIdle = 2.0f;
-	int m_PV;
+
+	bool m_isAngry = false;
+	const float m_angryPVLimit = 100.0f;
+	float m_angrySpeed = 2.0f;
+	float m_angrySpeedShoot = 0.5f; 
+	float m_angryDamage = 2.0f;
+
+	float m_counterShootBossAngry = 0.0f;
+	float m_maxCounterShootBossAngry = 2.0f;
+
 };
