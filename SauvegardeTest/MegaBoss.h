@@ -12,7 +12,7 @@ class MegaBoss : public IGameObject
 public:
 	MegaBoss();
 	~MegaBoss();
-	void Init() override;
+	void Init() override {};
 	void Update(float deltatime) override;
 	void Draw(sf::RenderWindow& window) override;
 	sf::FloatRect GetBounds() const;
@@ -62,6 +62,5 @@ private:
 	float m_angryDamage = 2.0f;
 
 	float m_counterShootBossAngry = 0.0f;
-	float m_maxCounterShootBossAngry = 2.0f;
-
+	float m_maxCounterShootBossAngry = 1.8f;
 };

@@ -141,6 +141,9 @@ Boss::Boss()
 Boss::~Boss()
 {
     delete m_currentState;
+	m_currentState = nullptr;
+    delete m_pieces;
+	m_pieces = nullptr;
 }
 
 void Boss::setTargetPosition(const sf::Vector2f& position) { m_targetPosition = position; }

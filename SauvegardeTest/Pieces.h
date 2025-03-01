@@ -6,7 +6,7 @@ class Pieces : public IGameObject
 {
 public:
     Pieces(Player* player, int score);
-
+    ~Pieces();
     void Init() override;
     void Update(float deltatime) override;
     void Draw(sf::RenderWindow& window) override;

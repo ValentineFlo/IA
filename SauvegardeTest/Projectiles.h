@@ -37,7 +37,7 @@ class ProjectilesMegaBoss : public IGameObject
 {
 public:
 	ProjectilesMegaBoss();
-	~ProjectilesMegaBoss() = default;
+	~ProjectilesMegaBoss();
 	void Init() override;
 	void Update(float deltatime)override;
 	void Draw(sf::RenderWindow& window) override;

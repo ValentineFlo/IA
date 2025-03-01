@@ -132,6 +132,21 @@ ProjectilesMegaBoss::ProjectilesMegaBoss()
     Init();
 }
 
+ProjectilesMegaBoss::~ProjectilesMegaBoss()
+{
+    for (size_t i = 0; i < m_projectilesBoss.size(); ++i)
+    {
+        sf::Vector2f pos = m_projectilesBoss[i].getPosition();
+        if (pos.x < 0 || pos.x > 800 || pos.y < 0 || pos.y > 600)
+        {
+            m_projectilesBoss.erase(m_projectilesBoss.begin() + i);
+            m_directions.erase(m_directions.begin() + i);
+            --i;
+        }
+    }
+
+}
+
 void ProjectilesMegaBoss::Init()
 {
     m_speed = 700.0f;

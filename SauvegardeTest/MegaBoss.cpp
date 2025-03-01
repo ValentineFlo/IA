@@ -24,9 +24,10 @@ MegaBoss::MegaBoss() : m_rootNode(this), m_player(nullptr), m_projectiles(nullpt
     new BT::SpecialAttack(lowHealthCheck);
 }
 
-MegaBoss::~MegaBoss(){}
+MegaBoss::~MegaBoss() 
+{
 
-void MegaBoss::Init(){}
+}
 
 void MegaBoss::Update(float deltatime)
 {
@@ -73,6 +74,12 @@ void MegaBoss::Update(float deltatime)
     {
         Shoot();
 		m_counterShootBossAngry = m_maxCounterShootBossAngry;
+    }
+
+    if (m_isAngry && m_counterShootBossAngry <= 0)
+    {
+        SpecialAttack();
+        m_counterShootBossAngry = m_maxCounterShootBossAngry;
     }
 }
 

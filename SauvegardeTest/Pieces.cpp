@@ -6,6 +6,11 @@ Pieces::Pieces(Player* player, int score) : m_player(player), m_score(score)
     Init();
 }
 
+Pieces::~Pieces()
+{
+
+}
+
 void Pieces::Init()
 {
     m_pieces.clear();
