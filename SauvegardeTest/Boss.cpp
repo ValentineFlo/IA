@@ -134,13 +134,16 @@ Boss::Boss()
 {
     m_boss.setSize(sf::Vector2f(50, 50));
     m_boss.setFillColor(sf::Color::Magenta);
-    m_boss.setPosition(400, 50);
+    m_boss.setPosition(700, 70);
     m_PV = 200;
 }
 
 Boss::~Boss()
 {
     delete m_currentState;
+	m_currentState = nullptr;
+    delete m_pieces;
+	m_pieces = nullptr;
 }
 
 void Boss::setTargetPosition(const sf::Vector2f& position) { m_targetPosition = position; }

@@ -4,6 +4,13 @@
 #include <fstream>
 #include <vector>
 
+/**
+ * @class IGameObject
+ * @brief Interface de base pour les objets du jeu
+ *
+ * Cette classe gère les objets du jeu et leur comportement
+ */
+
 class IGameObject
 {
 public:
