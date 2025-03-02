@@ -5,6 +5,12 @@
 #include <array>
 #include <type_traits>
 
+/**
+ * @class Behavior Tree
+ *
+ * Cette classe represente une arbre de comportement qui permet de modifier le comportement du MégaBoss
+ */
+
 class IGameObject;
 
 namespace BT
