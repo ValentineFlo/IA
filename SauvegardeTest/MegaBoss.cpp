@@ -56,6 +56,7 @@ void MegaBoss::Update(float deltatime)
         return; 
     }
 
+    if (!isPlayerDetect())
     Patrol();
 
     if (m_counterShootBossAngry > 0)
