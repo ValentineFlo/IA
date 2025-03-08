@@ -250,12 +250,11 @@ void ProjectilesMegaBoss::Shoot()
     float directionNormalize = std::sqrt(direction.x * direction.x + direction.y * direction.y);
     direction /= directionNormalize;
 
-    float projectileSpeed = 500.f;
+    float projectileSpeed = 1.f;
     sf::Vector2f velocity = direction * projectileSpeed * 4.0f;
 
     m_projectilesBoss.push_back(projectile);
     m_directions.push_back(direction);
-    std::cout << "Tir special cree ! Nombre total de projectiles : " << m_projectilesBoss.size() << "\n";
 }
 
 void ProjectilesMegaBoss::ShootAngry()
@@ -272,6 +271,7 @@ void ProjectilesMegaBoss::ShootAngry()
     if (directionNormalize != 0)
         direction /= directionNormalize;
 
+    std::cout << "Tir angry ! Nombre total de projectiles : " << m_projectilesBoss.size() << "\n";
     m_projectilesBoss.push_back(projectile);
     m_directions.push_back(direction);
 }

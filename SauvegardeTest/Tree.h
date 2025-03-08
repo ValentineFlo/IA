@@ -156,8 +156,9 @@ namespace BT
         Status tick() override
         {
             if (!hasChild())
+            {
                 return Success;
-
+            }
             return getChild()->tick();
         }
 
@@ -181,6 +182,7 @@ namespace BT
         Status tickChildren()
         {
             Status childStatus = getChild()->tick();
+            std::cout << "BT: RootNode finished with status: " << childStatus << std::endl;
             if (childStatus == Success || childStatus == Failed)
                 m_isTickingChildNode = false;
 
@@ -191,19 +193,24 @@ namespace BT
         {
             if (!m_isTickingChildNode)
             {
+                std::cout << "BT: RootNode tick() called" << std::endl;
                 bool cond = condition();
 
                 if (!cond)
                     return Success;
 
                 if (!hasChild())
+                {
+                    std::cout << "BT: RootNode has NO child!" << std::endl;
                     return Success;
+                }
 
                 m_isTickingChildNode = true;
             }
 
             return tickChildren();
         }
+        
 
     private:
         bool m_isTickingChildNode;

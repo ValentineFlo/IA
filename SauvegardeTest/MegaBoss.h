@@ -87,6 +87,9 @@ public:
 	 * @brief Mode Shoot
 	 */
 	void Shoot();
+	/**
+	 * @brief Mode Special Shoot
+	 */
 	void SpecialAttack();
 
 public:
@@ -110,6 +113,15 @@ public:
 	 */
 	bool isDead() const;
 
+	float reseatShootTimer();
+
+	bool canShoot();
+
+	bool isIdle();
+	bool startIdle();
+	bool endIdle();
+
+
 private:
 	sf::RectangleShape m_megaboss;
 	sf::Vector2f m_position;
@@ -121,17 +133,18 @@ private:
 	int m_PV;
 
 	float m_counterShootBoss = 0.0f;
-	const float m_maxCounterShootBoss = 1.0f;
+	float m_counterTimerShoot = 2.0f;
 	bool m_isIdle = false;
 	float m_counterIdle = 0.0f;
 	const float m_maxCounterIdle = 2.0f;
 
 	bool m_isAngry = false;
-	const float m_angryPVLimit = 100.0f;
-	float m_angrySpeed = 2.0f;
-	float m_angrySpeedShoot = 0.5f; 
-	float m_angryDamage = 2.0f;
 
 	float m_counterShootBossAngry = 0.0f;
-	float m_maxCounterShootBossAngry = 1.8f;
+
+	//// Special attack
+	//const float m_specialAttackPVLimit = 50.0f;
+	//float m_attackSpeed = 3.0f;
+	//float m_attackSpeedShoot = 1.5f;
+	//bool m_isSpecialAttack = false;
 };

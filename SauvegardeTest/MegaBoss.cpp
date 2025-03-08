@@ -8,20 +8,25 @@ MegaBoss::MegaBoss() : m_rootNode(this), m_player(nullptr), m_projectiles(nullpt
     m_megaboss.setFillColor(sf::Color::Red);
     m_megaboss.setPosition(100, 40);
     m_speed = 100.0f;
-	m_PV = 300;
+	m_PV = 260;
 
     auto* behavior = new BT::Sequence(&m_rootNode);
-
-    auto* idleOrPatrol = new BT::Retry(behavior);
-    new BT::Idle(idleOrPatrol);
-    new BT::Patrol(idleOrPatrol);
-
-    auto* detectAndAttack = new BT::Sequence(behavior);
-    new BT::PlayerDetect(detectAndAttack);
-    new BT::AttackPlayer(detectAndAttack);
+    std::cout << "BT: Behavior Tree sequence created" << std::endl;
 
     auto* lowHealthCheck = new BT::LowHealth(behavior);
+
+    auto* detectAndAttack = new BT::Sequence(behavior);
+    std::cout << "BT: Adding PlayerDetect Sequence" << std::endl;
+
+    auto* Patrol = new BT::Patrol(detectAndAttack);
+    new BT::PlayerDetect(detectAndAttack);
+    new BT::AttackPlayer(detectAndAttack);
+    new BT::Idle(detectAndAttack);
+
+    std::cout << "BT: Adding Special Attack on Low Health" << std::endl;
     new BT::SpecialAttack(lowHealthCheck);
+    new BT::Patrol(detectAndAttack);
+
 }
 
 MegaBoss::~MegaBoss() 
@@ -31,14 +36,12 @@ MegaBoss::~MegaBoss()
 
 void MegaBoss::Update(float deltatime)
 {
+
     m_position = m_megaboss.getPosition();
 
-    if (m_PV <= m_angryPVLimit && !m_isAngry)
+    if (m_counterShootBoss > 0)
     {
-        m_isAngry = true;
-        m_speed *= m_angrySpeed;
-        m_counterShootBoss *= m_angrySpeedShoot;
-        m_maxCounterShootBossAngry  *= m_angrySpeedShoot;
+        m_counterShootBoss -= deltatime;
     }
 
     if (m_counterShootBossAngry > 0)
@@ -48,40 +51,16 @@ void MegaBoss::Update(float deltatime)
 
     if (m_isIdle)
     {
-        m_counterIdle -= deltatime;
-        if (m_counterIdle <= 0)
+        bool finished = endIdle();
+        if (finished)
         {
-            m_isIdle = false;
+            std::cout << "BT: MegaBoss Idle Finished in Update!" << std::endl;
         }
-        return; 
     }
 
-    if (!isPlayerDetect())
-    Patrol();
+    isPlayerDetect();
 
-    if (m_counterShootBossAngry > 0)
-    {
-        m_counterShootBossAngry -= deltatime;
-    }
-
-    if (isPlayerDetect() && m_counterShootBoss <= 0 && !m_isAngry)
-    {
-        Shoot();
-        Idle();
-        m_counterShootBoss = m_maxCounterShootBoss;
-    }
-
-    if (m_isAngry && m_counterShootBossAngry <= 0)
-    {
-        Shoot();
-		m_counterShootBossAngry = m_maxCounterShootBossAngry;
-    }
-
-    if (m_isAngry && m_counterShootBossAngry <= 0)
-    {
-        SpecialAttack();
-        m_counterShootBossAngry = m_maxCounterShootBossAngry;
-    }
+    m_rootNode.tick();
 }
 
 
@@ -130,6 +109,8 @@ void MegaBoss::Idle()
         m_isIdle = true;
         m_counterIdle = m_maxCounterIdle;
     }
+
+
 }
 
 void MegaBoss::Patrol()
@@ -165,17 +146,23 @@ void MegaBoss::Shoot()
     {
         std::cout << "Tir normal" << std::endl;
         m_projectilesMegaBoss->Shoot();
+        Idle();
     }
-    else if (m_isAngry)
-    {
-        m_projectilesMegaBoss->ShootAngry();
-        std::cout << "Tir special" << std::endl;
-    }
+   
 }
 
 void MegaBoss::SpecialAttack()
 {
-    
+    if (!m_projectilesMegaBoss) return;
+
+    std::cout << "MegaBoss utilise son attaque speciale en rafale !" << std::endl;
+
+    if (m_isAngry)
+    {
+        m_projectilesMegaBoss->ShootAngry();
+        std::cout << "Tir angry" << std::endl;
+    }
+
 }
 
 
@@ -194,6 +181,7 @@ void MegaBoss::takeDamage(int damagenmbr)
 
     std::cout << "APRES MegaBoss took " << damagenmbr << " damage" << std::endl;
     std::cout << "APRES MegaBoss PV : " << m_PV << std::endl;
+    m_rootNode.tick(); 
 }
 
 bool MegaBoss::isDead() const
@@ -203,4 +191,55 @@ bool MegaBoss::isDead() const
         return true;
     }
     return false;
+}
+
+float MegaBoss::reseatShootTimer()
+{
+    return m_counterShootBoss = m_counterTimerShoot;
+}
+
+bool MegaBoss::canShoot()
+{
+    return m_counterShootBoss <= 0;
+}
+
+bool MegaBoss::isIdle()
+{
+    if (m_isIdle)
+    {
+        return true;
+    }
+    return false;
+}
+
+bool MegaBoss::startIdle()
+{
+    if (!m_isIdle) 
+    {
+        std::cout << "MegaBoss entering Idle mode." << std::endl;
+
+        m_counterIdle = m_maxCounterIdle;
+        m_isIdle = true;
+    }
+    return true;
+}
+
+bool MegaBoss::endIdle()
+{
+    if (!m_isIdle) 
+    {
+        return false;
+    }
+
+    if (m_counterIdle > 0)
+    {
+        m_counterIdle -= 1;
+        std::cout << "Idle countdown: " << m_counterIdle << std::endl;
+        return false;
+    }
+    
+
+    std::cout << "MegaBoss exiting Idle mode." << std::endl;
+    m_isIdle = false;
+    return true;
 }
