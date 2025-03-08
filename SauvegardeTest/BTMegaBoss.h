@@ -6,7 +6,6 @@
 namespace BT
 {
    
-
     class PlayerDetect : public BehaviorNodeDecorator<MegaBoss, IConditionalNode>
     {
     public:
@@ -18,11 +17,9 @@ namespace BT
         bool condition() override
         {
             bool detected = getGameObject()->isPlayerDetect();
-            std::cout << "BT: PlayerDetect condition() - Detected: " << detected << std::endl;
 
             if (!detected)
             {
-                std::cout << "BT: Player lost, returning to Patrol" << std::endl;
                 return false;
             }
             return detected;
@@ -30,7 +27,6 @@ namespace BT
 
         Status tick() override
         {
-            std::cout << "BT: PlayerDetect tick() called" << std::endl;
             return IConditionalNode::tick();
         }
 
@@ -75,14 +71,12 @@ namespace BT
 
             if (!boss->isIdle())
             {
-                std::cout << "BT: Switching to Idle mode before attacking" << std::endl;
                 boss->startIdle();
                 return Running;
             }
 
             if (boss->endIdle())
             {
-                std::cout << "BT: Idle finished, switching to next action" << std::endl;
                 return Success;
             }
 
@@ -104,7 +98,7 @@ namespace BT
 
             if (boss->canShoot())
             {
-                std::cout << "BT: AttackPlayer tick() - Shooting" << std::endl;
+                std::cout << "BT: AttackPlayer tick() called" << std::endl;
                 boss->Shoot();
                 boss->reseatShootTimer();
                 return Running;
@@ -126,8 +120,7 @@ namespace BT
 
         bool condition() override
         {
-            bool lowHealth = getGameObject()->getPV() < 150;
-            std::cout << "BT: LowHealth condition = " << lowHealth << std::endl;
+            bool lowHealth = getGameObject()->getPV() <= 150;
             return lowHealth;
         }
 
@@ -137,12 +130,9 @@ namespace BT
             if (!boss) 
                 return Failed;
 
-            if (!hasExecuted)
+            if (condition())
             {
-                std::cout << "BT: LowHealth tick() - Executing Special Attack!" << std::endl;
-                std::cout << "BT: LowHealth condition() CHECKED - PV: " << boss->getPV() << std::endl;
                 boss->SpecialAttack();
-                hasExecuted = true;
                 return Running;
             }
 
@@ -150,8 +140,6 @@ namespace BT
 
         }
 
-    private:
-        bool hasExecuted = false;
     };
 
     class SpecialAttack : public BehaviorNodeDecorator<MegaBoss, IActionNode>
@@ -161,8 +149,20 @@ namespace BT
 
         Status tick() override
         {
-            getGameObject()->SpecialAttack();
-            return Success;
+            MegaBoss* boss = getGameObject();
+            if (!boss) return Failed;
+
+            if (boss->canShoot())
+            {
+                std::cout << "BT: Special Attack Activated!" << std::endl;
+                boss->SpecialAttack();
+                boss->reseatShootTimer();
+            }
+
+            std::cout << "BT: Special Attack - MegaBoss still patrolling!" << std::endl;
+            boss->Patrol();
+
+            return Running;
         }
     };
 

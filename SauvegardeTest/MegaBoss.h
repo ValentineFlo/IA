@@ -129,7 +129,7 @@ private:
 	Projectiles* m_projectiles;
 	ProjectilesMegaBoss* m_projectilesMegaBoss;
 	BT::RootNode m_rootNode; 
-	float m_speed;
+
 	int m_PV;
 
 	float m_counterShootBoss = 0.0f;
@@ -147,4 +147,6 @@ private:
 	//float m_attackSpeed = 3.0f;
 	//float m_attackSpeedShoot = 1.5f;
 	//bool m_isSpecialAttack = false;
+	float m_specialAttackCooldown = 0.5f;
+	float m_specialAttackTimer = 0.0f;
 };

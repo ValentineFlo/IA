@@ -7,8 +7,7 @@ MegaBoss::MegaBoss() : m_rootNode(this), m_player(nullptr), m_projectiles(nullpt
     m_megaboss.setSize(sf::Vector2f(50, 50));
     m_megaboss.setFillColor(sf::Color::Red);
     m_megaboss.setPosition(100, 40);
-    m_speed = 100.0f;
-	m_PV = 260;
+	m_PV = 300;
 
     auto* behavior = new BT::Sequence(&m_rootNode);
     std::cout << "BT: Behavior Tree sequence created" << std::endl;
@@ -25,8 +24,6 @@ MegaBoss::MegaBoss() : m_rootNode(this), m_player(nullptr), m_projectiles(nullpt
 
     std::cout << "BT: Adding Special Attack on Low Health" << std::endl;
     new BT::SpecialAttack(lowHealthCheck);
-    new BT::Patrol(detectAndAttack);
-
 }
 
 MegaBoss::~MegaBoss() 
@@ -59,6 +56,11 @@ void MegaBoss::Update(float deltatime)
     }
 
     isPlayerDetect();
+
+    if (m_specialAttackTimer > 0)
+    {
+        m_specialAttackTimer -= deltatime;
+    }
 
     m_rootNode.tick();
 }
@@ -116,23 +118,49 @@ void MegaBoss::Idle()
 void MegaBoss::Patrol()
 {
     static bool movingRight = true;
+    if (!m_isAngry)
+    {
+        float m_speed = 100;
 
-    if (movingRight)
-    {
-        m_megaboss.move(0, m_speed * 0.03f);
-        if (m_megaboss.getPosition().y >= 500)
+        if (movingRight)
         {
-            movingRight = false;
+            m_megaboss.move(0, m_speed * 0.03f);
+            if (m_megaboss.getPosition().y >= 500)
+            {
+                movingRight = false;
+            }
+        }
+        else
+        {
+            m_megaboss.move(0, -m_speed * 0.03f);
+            if (m_megaboss.getPosition().y <= 50)
+            {
+                movingRight = true;
+            }
         }
     }
-    else
+    else if (m_isAngry)
     {
-        m_megaboss.move(0,-m_speed * 0.03f);
-        if (m_megaboss.getPosition().y <= 50)
+        float m_speed = 200;
+
+        if (movingRight)
         {
-            movingRight = true;
+            m_megaboss.move(0, m_speed * 0.03f);
+            if (m_megaboss.getPosition().y >= 500)
+            {
+                movingRight = false;
+            }
+        }
+        else
+        {
+            m_megaboss.move(0, -m_speed * 0.03f);
+            if (m_megaboss.getPosition().y <= 50)
+            {
+                movingRight = true;
+            }
         }
     }
+
 }
 
 void MegaBoss::Shoot()
@@ -153,16 +181,20 @@ void MegaBoss::Shoot()
 
 void MegaBoss::SpecialAttack()
 {
-    if (!m_projectilesMegaBoss) return;
 
-    std::cout << "MegaBoss utilise son attaque speciale en rafale !" << std::endl;
-
-    if (m_isAngry)
+    if (!m_projectilesMegaBoss) 
     {
-        m_projectilesMegaBoss->ShootAngry();
-        std::cout << "Tir angry" << std::endl;
+        return;
     }
 
+    if (m_specialAttackTimer > 0)
+    {
+        return;
+    }
+
+    m_projectilesMegaBoss->ShootAngry();
+    m_specialAttackTimer = m_specialAttackCooldown;
+    
 }
 
 
@@ -181,7 +213,11 @@ void MegaBoss::takeDamage(int damagenmbr)
 
     std::cout << "APRES MegaBoss took " << damagenmbr << " damage" << std::endl;
     std::cout << "APRES MegaBoss PV : " << m_PV << std::endl;
-    m_rootNode.tick(); 
+
+    if (m_PV <= 150)
+    {
+        m_rootNode.tick();
+    }
 }
 
 bool MegaBoss::isDead() const
