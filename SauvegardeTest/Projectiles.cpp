@@ -271,7 +271,6 @@ void ProjectilesMegaBoss::ShootAngry()
     if (directionNormalize != 0)
         direction /= directionNormalize;
 
-    std::cout << "Tir angry ! Nombre total de projectiles : " << m_projectilesBoss.size() << "\n";
     m_projectilesBoss.push_back(projectile);
     m_directions.push_back(direction);
 }

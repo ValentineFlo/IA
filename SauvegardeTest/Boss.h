@@ -155,6 +155,6 @@ private:
     sf::Vector2f m_targetPosition;
     float m_speed;
     float m_detectionRadius;
-    Pieces* m_pieces = nullptr;
+    Pieces* m_pieces;
     int m_PV;
 }; 

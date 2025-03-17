@@ -131,6 +131,7 @@ Boss::Boss()
     : m_currentState(new IdleState())
     , m_detectionRadius(350.0f)
     , m_speed(150.0f)
+    , m_pieces (nullptr)
 {
     m_boss.setSize(sf::Vector2f(50, 50));
     m_boss.setFillColor(sf::Color::Magenta);
@@ -141,9 +142,7 @@ Boss::Boss()
 Boss::~Boss()
 {
     delete m_currentState;
-	m_currentState = nullptr;
     delete m_pieces;
-	m_pieces = nullptr;
 }
 
 void Boss::setTargetPosition(const sf::Vector2f& position) { m_targetPosition = position; }
@@ -198,6 +197,10 @@ void Boss::setPV(int PV) { m_PV = PV; }
 void Boss::takeDamage(int damagenmbr)
 {
     m_PV -= damagenmbr;
+    if (isDead())
+    {
+        
+    }
 }
 
 bool Boss::isDead() const

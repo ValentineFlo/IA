@@ -96,9 +96,8 @@ namespace BT
             if (!boss) 
                 return Failed;
 
-            if (boss->canShoot())
+            if (boss->essaiShoot())
             {
-                std::cout << "BT: AttackPlayer tick() called" << std::endl;
                 boss->Shoot();
                 boss->reseatShootTimer();
                 return Running;
@@ -152,14 +151,12 @@ namespace BT
             MegaBoss* boss = getGameObject();
             if (!boss) return Failed;
 
-            if (boss->canShoot())
+            if (boss->essaiShoot())
             {
-                std::cout << "BT: Special Attack Activated!" << std::endl;
                 boss->SpecialAttack();
                 boss->reseatShootTimer();
             }
 
-            std::cout << "BT: Special Attack - MegaBoss still patrolling!" << std::endl;
             boss->Patrol();
 
             return Running;

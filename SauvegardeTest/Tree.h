@@ -60,7 +60,6 @@ namespace BT
 
         void display() override
         {
-            std::cout << "child" << std::endl;
         }
     };
 
@@ -193,7 +192,6 @@ namespace BT
         {
             if (!m_isTickingChildNode)
             {
-                std::cout << "BT: RootNode tick() called" << std::endl;
                 bool cond = condition();
 
                 if (!cond)
@@ -201,7 +199,6 @@ namespace BT
 
                 if (!hasChild())
                 {
-                    std::cout << "BT: RootNode has NO child!" << std::endl;
                     return Success;
                 }
 

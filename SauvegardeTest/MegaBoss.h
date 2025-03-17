@@ -115,7 +115,7 @@ public:
 
 	float reseatShootTimer();
 
-	bool canShoot();
+	bool essaiShoot();
 
 	bool isIdle();
 	bool startIdle();
